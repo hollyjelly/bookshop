@@ -3,8 +3,8 @@ const express = require('express')
 const app = express()
 
 dotenv.config()
-
 app.listen(process.env.PORT)
+app.use(express.json())
 
 const userRouter = require('./routes/users')
 const bookRouter = require('./routes/book')
