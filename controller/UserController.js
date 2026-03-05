@@ -2,6 +2,9 @@ const conn = require('../mariadb')
 const {StatusCodes} = require('http-status-codes')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 const join = (req, res) => {
     const {email, password} = req.body
@@ -42,15 +45,18 @@ const login = (req, res) => {
 
         if (loginUser && loginUser.password == hashPassword) {
             const token = jwt.sign({
+                id: loginUser.id,
                 email: loginUser.email
             }, process.env.PRIVATE_KEY, {
-                expiresIn: '5m',
+                expiresIn: '10m',
                 issuer: "hyunji"
             })
 
             res.cookie("token", token, {
                 httpOnly: true
             })
+
+            console.log("쿠키요", token)
 
             return res.status(StatusCodes.OK).json(results)
         }
