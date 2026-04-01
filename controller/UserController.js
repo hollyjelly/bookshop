@@ -21,7 +21,12 @@ const join = (req, res) => {
             return res.status(StatusCodes.BAD_REQUEST).end()
         }
 
-        res.status(StatusCodes.CREATED).json(result)
+        if (result.affectedRows) {
+            res.status(StatusCodes.CREATED).json(result)
+        }
+        else {
+            return res.status(StatusCodes.BAD_REQUEST).end()
+        }
     })
 }
 
